@@ -25,6 +25,9 @@ public class MainTest {
 			ukupnoKM += zaFakturu.get(u)*u.getCijena();
 		}
 		System.out.println("\nUkupno KM: "+ukupnoKM);
+		
+		// ispis u fajl
+		FileReadAndWrite.writeLines(zaFakturu, "./izlaz.txt");
 	}
 
 }

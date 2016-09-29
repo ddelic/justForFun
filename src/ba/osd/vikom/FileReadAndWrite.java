@@ -6,33 +6,55 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class FileReadAndWrite {
 
 	public static List<String> readAllLines(String pathToFile) {
-			Path p = Paths.get(pathToFile);
-			try {
-				return Files.readAllLines(p);
-			}
-			catch (IOException e) {
-				System.out.println("Greska prilikom citanja podataka iz konfiguracionog fajla");
-				e.printStackTrace();
-				return new ArrayList<>();
-			}
+		Path p = Paths.get(pathToFile);
+		try {
+			return Files.readAllLines(p);
+		}
+		catch (IOException e) {
+			System.out.println("Greska prilikom citanja podataka iz konfiguracionog fajla");
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
 	}
 	
-	public static boolean writeLines(List<String> lines) {
-		for(String l : lines) {
+	
+	// ovdje ima ponovaljanja koda, treba staviti u jednu metodu
+	public static boolean writeLines(HashMap<Usluga, Integer> map, String path) {
+		Path p = Paths.get(path);
+		for (Usluga u : map.keySet()) {
 			try {
-				Files.write(Paths.get("./output.txt"), l.getBytes(), StandardOpenOption.APPEND);
+				if (!Files.exists(p))
+					Files.createFile(p);
+				Files.write(Paths.get(path), u.toString().getBytes(), StandardOpenOption.APPEND);
 			}
 			catch (IOException e) {
 				System.out.println("Greska prilikom ispisa u fajl ");
 				e.printStackTrace();
 				return false;
 			}
-		}		return true;
+		}
+		return true;
+	}
+
+	public static boolean writeLines(String line, String path) {
+		Path p = Paths.get(path);
+		try {
+			if (!Files.exists(p))
+				Files.createFile(p);
+			Files.write(Paths.get(path), line.getBytes(), StandardOpenOption.APPEND);
+		}
+		catch (IOException e) {
+			System.out.println("Greska prilikom ispisa u fajl ");
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 }
